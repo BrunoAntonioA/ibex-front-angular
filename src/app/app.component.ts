@@ -22,14 +22,15 @@ export class AppComponent {
   }
 
   initializeSession(){
+    sessionStorage.clear()
     var ibex = new Ibex();
     ibex.filename = "";
     this.ibexService.postIbex(ibex).subscribe((res: any) =>{
       var session = new Session();
       session.ibexId = res._id;
+      sessionStorage.setItem("ibexId", res._id)
 
       this.sessionService.postSession(session).subscribe((res: any) => {
-        sessionStorage.clear()
         sessionStorage.setItem("sessionId", res._id)
 
       });

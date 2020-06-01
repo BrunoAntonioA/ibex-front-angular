@@ -3,5 +3,5 @@ export class Ibex {
     filename: string;
     fnctions: [];
     domains: [];
-    constrains: [];
+    constraints: [];
 }

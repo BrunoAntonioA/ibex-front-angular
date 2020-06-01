@@ -20,6 +20,12 @@ export class IbexService {
 
   constructor(private http: HttpClient) { }
 
+  ngOnInit(){
+    this.selectedConstraint = ""
+    this.selectedDomain = ""
+    this.selectedFunction = ""
+  }
+
   postIbex(ibex : Ibex){
     return this.http.post(this.baseURL, ibex);
   }

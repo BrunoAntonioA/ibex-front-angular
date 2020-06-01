@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import {NgApexchartsModule} from 'ng-apexcharts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,30 +17,16 @@ import { FnctionComponent } from './fnction/fnction.component';
 import { DomainComponent } from './domain/domain.component';
 import { ConstraintComponent } from './constraint/constraint.component';
 import { IbexComponent } from './ibex/ibex.component';
+import { ParametrosComponent } from './parametros/parametros.component';
+import { AmbosComponent } from './ambos/ambos.component';
 
 const appRoutes: Routes = [
-  { path: '', 
+  { path: 'ibex', 
     component: IbexComponent,
     children: [
-      { path: 'points', component: PointsComponent},
-      { path: 'input', 
-        component: AsideMenuComponent,
-        children:[
-          { path: '', component: FnctionComponent},
-          { path: 'fnction', component: FnctionComponent},
-          { path: 'domain', component: DomainComponent},
-          { path: 'constraint', component: ConstraintComponent}
-        ]
-      },
-      { path: '', 
-        component: AsideMenuComponent,
-        children:[
-          { path: '', component: FnctionComponent},
-          { path: 'fnction', component: FnctionComponent},
-          { path: 'domain', component: DomainComponent},
-          { path: 'constraint', component: ConstraintComponent}
-        ]
-      }
+        { path: 'parametros', component: ParametrosComponent},
+        { path: 'grafico', component: GraphComponent},
+        { path: 'ambos', component: AmbosComponent}
     ]
   }
   
@@ -58,13 +45,16 @@ const appRoutes: Routes = [
     FnctionComponent,
     DomainComponent,
     ConstraintComponent,
-    IbexComponent
+    IbexComponent,
+    ParametrosComponent,
+    AmbosComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    NgApexchartsModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true}// <-- debugging purposes only

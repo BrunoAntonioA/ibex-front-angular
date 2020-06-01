@@ -1,6 +1,24 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { dataSeries } from "./data-series";
 
-declare var Plotly: any;
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexTitleSubtitle,
+  ApexDataLabels,
+  ApexFill,
+  ApexMarkers,
+  ApexYAxis,
+  ApexXAxis,
+  ApexTooltip
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  title: ApexTitleSubtitle;
+};
 
 @Component({
   selector: 'app-graph',
@@ -8,59 +26,88 @@ declare var Plotly: any;
   styleUrls: ['./graph.component.css']
 })
 
+export class GraphComponent {
+  public series: ApexAxisChartSeries;
+  public chart: ApexChart;
+  public dataLabels: ApexDataLabels;
+  public markers: ApexMarkers;
+  public title: ApexTitleSubtitle;
+  public fill: ApexFill;
+  public yaxis: ApexYAxis;
+  public xaxis: ApexXAxis;
+  public tooltip: ApexTooltip;
 
-
-export class GraphComponent implements OnInit {
-  @ViewChild("Graph", { static: true })
-  private Graph: ElementRef;
-  private data: any;
-
-  constructor() { }
-
-  ngOnInit(): void {
-    this.data = {
-      x: [1, 2, 3, 4],
-      y: [3, 6, 9, 12], //keeping the length same
-      name: 'type string, name of the trace',
-      type: 'scattergl', //this very important to activate WebGL
-      mode: 'line' //other properties can be found in the docs.
-    }
-    this.Graph = Plotly.newPlot( 
-      this.Graph.nativeElement, //our viewchild element
-      this.data, //data provided
-      { //here starts the layout definition (keep in mind the commas)
-      autoexpand: "true",
-      autosize: "true",
-      width: window.innerWidth - 200, //we give initial width, so if the
-                                      //graph is rendered while hidden, it   
-                                      //takes the right shape
-      margin: {
-      autoexpand: "true",
-      margin: 0
-      },
-      offset: 0,
-      type: "scattergl",
-      title: name, //Title of the graph
-      hovermode: "closest",
-      xaxis: {
-      linecolor: "black",
-      linewidth: 2,
-      mirror: true,
-      title: "Time (s)",
-      automargin: true
-      },
-      yaxis: {
-      linecolor: "black",
-      linewidth: 2,
-      mirror: true,
-      automargin: true,
-      title: 'Any other Unit'
-          }
-      },
-      { //this is where the configuration is defined
-      responsive: true, //important to keep graph responsive
-      scrollZoom: true
-      });
+  constructor() {
+    this.initChartData();
+  }
     
+  public initChartData(): void {
+    let ts2 = 1484418600000;
+    let dates = [];
+    for (let i = 0; i < 120; i++) {
+      ts2 = ts2 + 86400000;
+      dates.push([ts2, dataSeries[1][i].value]);
+    }
+
+    this.series = [
+      {
+        name: "XYZ MOTORS",
+        data: dates
+      }
+    ];
+    this.chart = {
+      type: "area",
+      stacked: false,
+      height: 350,
+      zoom: {
+        type: "x",
+        enabled: true,
+        autoScaleYaxis: true
+      },
+      toolbar: {
+        autoSelected: "zoom"
+      }
+    };
+    this.dataLabels = {
+      enabled: false
+    };
+    this.markers = {
+      size: 0
+    };
+    this.title = {
+      text: "Problema propuesto",
+      align: "center"
+    };
+    this.fill = {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        inverseColors: false,
+        opacityFrom: 0.5,
+        opacityTo: 0,
+        stops: [0, 90, 100]
+      }
+    };
+    this.yaxis = {
+      labels: {
+        formatter: function(val) {
+          return (val / 1000000).toFixed(0);
+        }
+      },
+      title: {
+        text: "Price"
+      }
+    };
+    this.xaxis = {
+      type: "datetime"
+    };
+    this.tooltip = {
+      shared: false,
+      y: {
+        formatter: function(val) {
+          return (val / 1000000).toFixed(0);
+        }
+      }
+    };
   }
 }

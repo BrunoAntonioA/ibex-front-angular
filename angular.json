@@ -27,7 +27,8 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/js/plotly.min.js"
+              "node_modules/plotly.js/dist/plotly.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {

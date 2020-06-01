@@ -1,0 +1,119 @@
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Functions</h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="col-auto">
+                <div class="input-group mb-2">
+                        <input type="text" class="form-control" placeholder="function" [(ngModel)]="ibexService.selectedFunction">
+                        <button class="btn btn-primary" (click)="plusFunction()"><i class="fa fa-plus"></i></button>
+                </div>
+                <div class="">
+                  <table class="table table-hover table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Function</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let fnc of ibexService.selectedIbex.fnctions">
+                        <td>{{fnc}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="div">
+                .
+              </div>
+          </div>
+        </div>
+      </div>
+    
+      <div>
+        
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Domains</h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="col-auto">
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" placeholder="Domain" [(ngModel)]="ibexService.selectedDomain">
+                  <button class="btn btn-primary" (click)="plusDomain()"><i class="fa fa-plus"></i></button>
+                </div>
+                <div class="">
+                  <table class="table table-hover table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Domains</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let dom of ibexService.selectedIbex.domains">
+                        <td>{{dom}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="div">
+                .
+              </div>
+          </div>
+        </div>
+      </div>
+      <div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Constraints</h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="col-auto">
+                <div class="input-group mb-2">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" placeholder="Constraint" [(ngModel)]="ibexService.selectedConstraint">
+                        <button class="btn btn-primary" (click)="plusConstraint()"><i class="fa fa-plus"></i></button>
+                  </div>
+                </div>
+                <div class="">
+                  <table class="table table-hover table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Constraints</th>
+                      </tr>
+                    </thead>
+                    <tbody >
+                      <tr *ngFor="let const of ibexService.selectedIbex.constraints">
+                        <td>{{const}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="div">
+                .
+              </div>
+          </div>
+        </div>
+      </div>
+      <div>
+    </div>
+
+</div>
+
+
