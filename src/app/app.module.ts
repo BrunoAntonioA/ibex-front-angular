@@ -19,6 +19,7 @@ import { ConstraintComponent } from './constraint/constraint.component';
 import { IbexComponent } from './ibex/ibex.component';
 import { ParametrosComponent } from './parametros/parametros.component';
 import { AmbosComponent } from './ambos/ambos.component';
+import { InicioComponent } from './inicio/inicio.component';
 
 const appRoutes: Routes = [
   { path: 'ibex', 
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
         { path: 'grafico', component: GraphComponent},
         { path: 'ambos', component: AmbosComponent}
     ]
-  }
+  },
+  { path: '', component: InicioComponent }
   
 ];
 

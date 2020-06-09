@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { dataSeries } from "./data-series";
+import { interval, timer } from 'rxjs';
+
+import { ApisolverService } from '../shared/apisolver/apisolver.service';
+
+import { Instruccion } from '../shared/apisolver/instruccion.model';
 
 import {
   ApexAxisChartSeries,
@@ -26,7 +31,7 @@ export type ChartOptions = {
   styleUrls: ['./graph.component.css']
 })
 
-export class GraphComponent {
+export class GraphComponent implements OnInit{
   public series: ApexAxisChartSeries;
   public chart: ApexChart;
   public dataLabels: ApexDataLabels;
@@ -37,10 +42,25 @@ export class GraphComponent {
   public xaxis: ApexXAxis;
   public tooltip: ApexTooltip;
 
-  constructor() {
+  constructor(private apisolverService: ApisolverService) {
     this.initChartData();
   }
+
+  ngOnInit(){
+    const contador = interval(1000);
     
+    contador.subscribe(() =>{
+      var instruccion = new Instruccion();
+      instruccion.instruc = "get";
+      instruccion.param = "";
+      this.apisolverService.postInstruction(instruccion).subscribe((res) =>{
+      console.log(res);
+    });
+    });
+  }
+    
+
+
   public initChartData(): void {
     let ts2 = 1484418600000;
     let dates = [];
