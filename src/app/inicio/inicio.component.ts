@@ -20,6 +20,7 @@ export class InicioComponent implements OnInit {
     var instruccion = new Instruccion();
     instruccion.instruc = "get";
     instruccion.param = "";
+    instruccion.port = 8000;
     this.apisolverService.postInstruction(instruccion).subscribe((res) =>{
       console.log(res);
     });

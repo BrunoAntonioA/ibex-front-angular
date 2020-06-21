@@ -47,27 +47,63 @@ export class GraphComponent implements OnInit{
   }
 
   ngOnInit(){
-    const contador = interval(1000);
+    
+    const contador = interval(4000);
     
     contador.subscribe(() =>{
       var instruccion = new Instruccion();
-      instruccion.instruc = "get";
-      instruccion.param = "";
-      this.apisolverService.postInstruction(instruccion).subscribe((res) =>{
-      console.log(res);
+      instruccion.instruc = "run";
+      instruccion.param = "100 0.1";
+      instruccion.port = 8000;
+      this.apisolverService.postInstruction(instruccion).subscribe((res : any) =>{
+      console.log(res.response);
     });
     });
+  
+  }
+
+  changeData(){
+    let instruction = new Instruccion;
+    instruction.instruc = "get";
+    instruction.param = "";
+    instruction.port = 8000;
+    
+    this.apisolverService.postInstruction(instruction).subscribe((res: any) =>{
+      console.log("res:", res)
+    });
+    
+    var data = [
+      {
+        x: 1,
+        y: 3
+      },
+      {
+        x: 2,
+        y: 6
+      },
+      {
+        x: 3,
+        y: 9
+      }
+    ];
+
+    this.series = [
+      {
+        name: "peeky blanders",
+        data: data
+      }
+    ]
+
   }
     
 
 
   public initChartData(): void {
-    let ts2 = 1484418600000;
     let dates = [];
-    for (let i = 0; i < 120; i++) {
-      ts2 = ts2 + 86400000;
-      dates.push([ts2, dataSeries[1][i].value]);
-    }
+    dataSeries.forEach(element => {
+      console.log(element);
+      dates.push(element.y)
+    });
 
     this.series = [
       {
@@ -95,7 +131,7 @@ export class GraphComponent implements OnInit{
       size: 0
     };
     this.title = {
-      text: "Problema propuesto",
+      
       align: "center"
     };
     this.fill = {
@@ -115,11 +151,14 @@ export class GraphComponent implements OnInit{
         }
       },
       title: {
-        text: "Price"
+        text: "y"
       }
     };
     this.xaxis = {
-      type: "datetime"
+      type: "numeric",
+      title:{
+        text: "x"
+      }
     };
     this.tooltip = {
       shared: false,
