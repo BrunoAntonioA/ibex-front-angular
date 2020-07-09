@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { ApisolverService } from '../shared/apisolver/apisolver.service';
 
 import { Instruccion } from '../shared/apisolver/instruccion.model';
+
+declare const angular: any;
 
 @Component({
   selector: 'app-inicio',
@@ -24,5 +26,9 @@ export class InicioComponent implements OnInit {
     this.apisolverService.postInstruction(instruccion).subscribe((res) =>{
       console.log(res);
     });
+  }
+
+  tryIbex(){
+    angular();
   }
 }

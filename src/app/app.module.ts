@@ -7,19 +7,13 @@ import {NgApexchartsModule} from 'ng-apexcharts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TopMenuComponent } from './top-menu/top-menu.component';
-import { PageComponent } from './page/page.component';
-import { AsideMenuComponent } from './aside-menu/aside-menu.component';
 import { PointsComponent } from './points/points.component';
 import { GraphComponent } from './graph/graph.component';
-import { FooterComponent } from './footer/footer.component';
-import { FnctionComponent } from './fnction/fnction.component';
-import { DomainComponent } from './domain/domain.component';
-import { ConstraintComponent } from './constraint/constraint.component';
 import { IbexComponent } from './ibex/ibex.component';
 import { ParametrosComponent } from './parametros/parametros.component';
 import { AmbosComponent } from './ambos/ambos.component';
 import { InicioComponent } from './inicio/inicio.component';
+import { PlotlyComponent } from './plotly/plotly.component';
 
 const appRoutes: Routes = [
   { path: 'ibex', 
@@ -38,18 +32,13 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    TopMenuComponent,
-    PageComponent,
-    AsideMenuComponent,
     PointsComponent,
     GraphComponent,
-    FooterComponent,
-    FnctionComponent,
-    DomainComponent,
-    ConstraintComponent,
     IbexComponent,
     ParametrosComponent,
-    AmbosComponent
+    AmbosComponent,
+    PlotlyComponent,
+    InicioComponent
   ],
   imports: [
     BrowserModule,
@@ -68,5 +57,5 @@ const appRoutes: Routes = [
 })
 export class AppModule { }
 export const routingComponents = [
-  IbexComponent, PointsComponent, AsideMenuComponent
+  IbexComponent, PointsComponent
 ]

@@ -17,4 +17,8 @@ export class ApisolverService {
   postInstruction(instruccion : Instruccion){
     return this.http.post(this.baseURL, instruccion);
   }
+
+  setInstance(filename : string, base : string, string : string){
+    return this.http.post(base + 'crearInstancia/' + filename, {"string" : string, "port" : 8000});
+  }
 }

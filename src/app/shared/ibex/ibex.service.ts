@@ -12,6 +12,10 @@ export class IbexService {
 
   selectedIbex: Ibex;
 
+  functions : string[] = [];
+  domains : string[] = [];
+  constraints : string[] = [];
+
   selectedFunction: string;
   selectedDomain: string;
   selectedConstraint: string;

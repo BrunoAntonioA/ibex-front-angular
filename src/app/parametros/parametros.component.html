@@ -20,7 +20,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let fnc of ibexService.selectedIbex.fnctions">
+                      <tr *ngFor="let fnc of ibexService.functions">
                         <td>{{fnc}}</td>
                       </tr>
                     </tbody>
@@ -59,7 +59,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let dom of ibexService.selectedIbex.domains">
+                      <tr *ngFor="let dom of ibexService.domains">
                         <td>{{dom}}</td>
                       </tr>
                     </tbody>
@@ -98,7 +98,7 @@
                       </tr>
                     </thead>
                     <tbody >
-                      <tr *ngFor="let const of ibexService.selectedIbex.constraints">
+                      <tr *ngFor="let const of ibexService.constraints">
                         <td>{{const}}</td>
                       </tr>
                     </tbody>
@@ -113,7 +113,8 @@
       </div>
       <div>
     </div>
-
+    <button (click)='concatenateParameters()'>concatenate</button>
+    <button (click)='crearInstancia()'> crear Instancia </button>
 </div>
 
 

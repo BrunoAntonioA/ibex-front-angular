@@ -28,7 +28,8 @@
             ],
             "scripts": [
               "node_modules/plotly.js/dist/plotly.min.js",
-              "node_modules/apexcharts/dist/apexcharts.min.js"
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+              "src/assets/js/ibex.js"
             ]
           },
           "configurations": {

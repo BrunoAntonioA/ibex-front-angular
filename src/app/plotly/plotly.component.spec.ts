@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DomainComponent } from './domain.component';
+import { PlotlyComponent } from './plotly.component';
 
-describe('DomainComponent', () => {
-  let component: DomainComponent;
-  let fixture: ComponentFixture<DomainComponent>;
+describe('PlotlyComponent', () => {
+  let component: PlotlyComponent;
+  let fixture: ComponentFixture<PlotlyComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DomainComponent ]
+      declarations: [ PlotlyComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DomainComponent);
+    fixture = TestBed.createComponent(PlotlyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

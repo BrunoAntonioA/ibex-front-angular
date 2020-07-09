@@ -6,6 +6,8 @@ import { SessionService } from './shared/session/session.service';
 import { Ibex } from './shared/ibex/ibex.model';
 import { Session } from './shared/session/session.model';
 
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,6 +27,8 @@ export class AppComponent {
     sessionStorage.clear()
     var ibex = new Ibex();
     ibex.filename = "";
+
+    /*
     this.ibexService.postIbex(ibex).subscribe((res: any) =>{
       var session = new Session();
       session.ibexId = res._id;
@@ -35,6 +39,7 @@ export class AppComponent {
 
       });
     });
+    */
   }
   
 }

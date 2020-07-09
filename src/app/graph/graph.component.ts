@@ -62,38 +62,25 @@ export class GraphComponent implements OnInit{
   
   }
 
-  changeData(){
+  async changeData(){
     let instruction = new Instruccion;
-    instruction.instruc = "get";
+    
+    instruction.instruc = "glw";
     instruction.param = "";
     instruction.port = 8000;
     
-    this.apisolverService.postInstruction(instruction).subscribe((res: any) =>{
-      console.log("res:", res)
+    await this.apisolverService.postInstruction(instruction).subscribe((res: any) =>{
+        console.log("lower:", res.array)
+    });
+
+    instruction.instruc = "gup";
+    instruction.param = "";
+    instruction.port = 8000;
+    
+    await this.apisolverService.postInstruction(instruction).subscribe((res: any) =>{
+        console.log("upper:", res.array)
     });
     
-    var data = [
-      {
-        x: 1,
-        y: 3
-      },
-      {
-        x: 2,
-        y: 6
-      },
-      {
-        x: 3,
-        y: 9
-      }
-    ];
-
-    this.series = [
-      {
-        name: "peeky blanders",
-        data: data
-      }
-    ]
-
   }
     
 
@@ -107,7 +94,6 @@ export class GraphComponent implements OnInit{
 
     this.series = [
       {
-        name: "XYZ MOTORS",
         data: dates
       }
     ];
@@ -145,11 +131,6 @@ export class GraphComponent implements OnInit{
       }
     };
     this.yaxis = {
-      labels: {
-        formatter: function(val) {
-          return (val / 1000000).toFixed(0);
-        }
-      },
       title: {
         text: "y"
       }
