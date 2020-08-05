@@ -17,7 +17,14 @@ export class ParametrosComponent implements OnInit {
 
   constructor(public ibexService: IbexService, public apiSolverService : ApisolverService) { }
 
+  instanciaFlag: Boolean;
+  graficadoFlag: Boolean;
+
   ngOnInit() {
+
+    this.apiSolverService.currentInstanciaFlag.subscribe(instanciaFlag => this.instanciaFlag = instanciaFlag)
+    this.apiSolverService.currentGraficoFlag.subscribe(graficoFlag => this.graficadoFlag = graficoFlag)
+
     this.initializeParams()
   }
   
@@ -43,43 +50,22 @@ export class ParametrosComponent implements OnInit {
     this.ibexService.domains.push('z1 in [-1e8, 1e8];\n')
     this.ibexService.domains.push('z2 in [-1e8, 1e8];')
     
-
-    /*
-    this.ibexService.selectedIbex = new Ibex()
-    this.ibexService.getIbexId(sessionStorage.getItem("ibexId")).subscribe((res : Ibex) => {
-      this.ibexService.selectedIbex = res;
-    });
-    */
   }
 
   
   plusFunction(){
     this.ibexService.functions.push(this.ibexService.selectedFunction)
-    /*
-    this.ibexService.putIbex(this.ibexService.selectedIbex).subscribe((res) => {
-      this.ibexService.selectedFunction = ""
-      
-    });
-    */
+    this.ibexService.selectedFunction = "";
   }
 
   plusDomain(){
     this.ibexService.domains.push(this.ibexService.selectedDomain)
-    /*
-    this.ibexService.putIbex(this.ibexService.selectedIbex).subscribe((res) => {
-      this.ibexService.selectedDomain = ""
+    this.ibexService.selectedDomain = "";
 
-    });
-    */
   }
   plusConstraint(){
     this.ibexService.constraints.push(this.ibexService.selectedConstraint)
-    /*
-    this.ibexService.putIbex(this.ibexService.selectedIbex).subscribe((res) => {
-      this.ibexService.selectedConstraint = ""
-      
-    });
-    */
+    this.ibexService.selectedConstraint = "";
   }
 
   concatenateParameters(){
@@ -108,13 +94,12 @@ export class ParametrosComponent implements OnInit {
   }
   
   crearInstancia(){
+    this.instanciaFlag = true;
+    this.apiSolverService.changeInstanciaFlag(this.instanciaFlag)
+
     let filename = Math.floor((Math.random() * 1000000) + 1);
 
     let base = 'http://localhost:3000/tesis/';
-    let getDatos = base + 'getDatos/' + filename
-    let setInstance = base + 'crearInstancia/' + filename;
-    let setInstanceByName = base + 'crearInstanciaPorNombre/' + filename;
-
     let concatenateParameters = this.concatenateParameters()
 
     this.apiSolverService.setInstance(filename.toString(), base, concatenateParameters).subscribe((res) => {

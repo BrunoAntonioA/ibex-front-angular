@@ -1,3 +1,10 @@
+<div class="my-4">
+  <div class="d-flex justify-content-center">
+    <div *ngIf='!instanciaFlag'>
+      <button class="btn btn-success" (click)='crearInstancia()'> Crear Instancia! </button>
+    </div>
+  </div>
+</div>
 <div class="row">
     <div class="col-lg-4">
         <div class="card shadow mb-4">
@@ -8,10 +15,13 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="col-auto">
+              <div *ngIf='!instanciaFlag'>
                 <div class="input-group mb-2">
                         <input type="text" class="form-control" placeholder="function" [(ngModel)]="ibexService.selectedFunction">
                         <button class="btn btn-primary" (click)="plusFunction()"><i class="fa fa-plus"></i></button>
                 </div>
+
+              </div>
                 <div class="">
                   <table class="table table-hover table-dark">
                     <thead>
@@ -47,10 +57,13 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="col-auto">
+              <div *ngIf='!instanciaFlag'>
                 <div class="input-group mb-2">
                   <input type="text" class="form-control" placeholder="Domain" [(ngModel)]="ibexService.selectedDomain">
                   <button class="btn btn-primary" (click)="plusDomain()"><i class="fa fa-plus"></i></button>
                 </div>
+
+              </div>
                 <div class="">
                   <table class="table table-hover table-dark">
                     <thead>
@@ -85,9 +98,12 @@
           <div class="card-body">
             <div class="col-auto">
                 <div class="input-group mb-2">
+                  <div *ngIf='!instanciaFlag'>
                     <div class="input-group mb-2">
                         <input type="text" class="form-control" placeholder="Constraint" [(ngModel)]="ibexService.selectedConstraint">
                         <button class="btn btn-primary" (click)="plusConstraint()"><i class="fa fa-plus"></i></button>
+                  </div>
+
                   </div>
                 </div>
                 <div class="">
@@ -113,8 +129,6 @@
       </div>
       <div>
     </div>
-    <button (click)='concatenateParameters()'>concatenate</button>
-    <button (click)='crearInstancia()'> crear Instancia </button>
 </div>
 
 

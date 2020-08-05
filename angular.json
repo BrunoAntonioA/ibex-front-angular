@@ -29,7 +29,8 @@
             "scripts": [
               "node_modules/plotly.js/dist/plotly.min.js",
               "node_modules/apexcharts/dist/apexcharts.min.js",
-              "src/assets/js/ibex.js"
+              "src/assets/js/ibex.js",
+              "src/assets/js/csv.js"
             ]
           },
           "configurations": {
@@ -123,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ibex-front"
+    }
+  },
+  "defaultProject": "ibex-front",
+  "cli": {
+    "analytics": "34ceb8f2-f20e-4635-bd71-42e607ab6917"
+  }
 }

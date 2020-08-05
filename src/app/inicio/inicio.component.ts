@@ -15,20 +15,14 @@ export class InicioComponent implements OnInit {
 
   constructor(private apisolverService: ApisolverService) { }
 
+  array : Array<Number>
+
   ngOnInit(): void {
+    this.array = [1, 2, 3]
+    console.log(this.array)
   }
 
-  tryApi(){
-    var instruccion = new Instruccion();
-    instruccion.instruc = "get";
-    instruccion.param = "";
-    instruccion.port = 8000;
-    this.apisolverService.postInstruction(instruccion).subscribe((res) =>{
-      console.log(res);
-    });
-  }
-
-  tryIbex(){
-    angular();
+  getIndex(n){
+    console.log('indexOf(2): ', this.array.indexOf(n))
   }
 }

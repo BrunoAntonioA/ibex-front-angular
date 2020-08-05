@@ -8,20 +8,24 @@ import {NgApexchartsModule} from 'ng-apexcharts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PointsComponent } from './points/points.component';
-import { GraphComponent } from './graph/graph.component';
 import { IbexComponent } from './ibex/ibex.component';
 import { ParametrosComponent } from './parametros/parametros.component';
-import { AmbosComponent } from './ambos/ambos.component';
 import { InicioComponent } from './inicio/inicio.component';
 import { PlotlyComponent } from './plotly/plotly.component';
+
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+
+import { PlotlyViaCDNModule } from 'angular-plotly.js';
+
+PlotlyViaCDNModule.plotlyVersion = '1.49.4'; // can be `latest` or any version number (i.e.: '1.40.0')
 
 const appRoutes: Routes = [
   { path: 'ibex', 
     component: IbexComponent,
     children: [
         { path: 'parametros', component: ParametrosComponent},
-        { path: 'grafico', component: GraphComponent},
-        { path: 'ambos', component: AmbosComponent}
+        { path: 'grafico', component: PlotlyComponent},
+        { path: '', component: ParametrosComponent}
     ]
   },
   { path: '', component: InicioComponent }
@@ -33,14 +37,12 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     PointsComponent,
-    GraphComponent,
     IbexComponent,
     ParametrosComponent,
-    AmbosComponent,
     PlotlyComponent,
     InicioComponent
   ],
-  imports: [
+  imports: [  
     BrowserModule,
     FormsModule,
     AppRoutingModule,
@@ -49,7 +51,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true}// <-- debugging purposes only
-    )
+    ),
+    PlotlyViaCDNModule,
   ],
   exports: [RouterModule],
   providers: [],
