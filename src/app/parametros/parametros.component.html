@@ -31,7 +31,16 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let fnc of ibexService.functions">
-                        <td>{{fnc}}</td>
+                        <td>
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder={{fnc}} aria-label={{fnc}} aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="button" (click)="deleteFun(fnc)">
+                                Del
+                              </button>
+                            </div>
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -73,7 +82,16 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let dom of ibexService.domains">
-                        <td>{{dom}}</td>
+                        <td>
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder={{dom}} aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="button" (click)="deleteDom(dom)">
+                                Del
+                              </button>
+                            </div>
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -115,7 +133,16 @@
                     </thead>
                     <tbody >
                       <tr *ngFor="let const of ibexService.constraints">
-                        <td>{{const}}</td>
+                        <td>
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder={{const}} aria-label={{const}} aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="button" (click)="deleteCnt(const)">
+                                Del
+                              </button>
+                            </div>
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>

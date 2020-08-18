@@ -1,82 +1,46 @@
-<!-- Page Wrapper -->
-<div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fa fa-bullseye"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">PUCV <sup>solver</sup></div>
-    </a>
-    
-
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <a class="nav-link" ></a>
-    </li>
-    
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    
-    
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Solvers
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fa fa-bullseye"></i>
-          <span>IBEX - bi objective</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" routerLink="/ibex/grafico" >Gráfico</a>
-            <a class="collapse-item" routerLink="/ibex/parametros">Parámetros</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand mx-4" href="#">Solver</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link mx-4" href="#">Inicio <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mx-4" href="#">Unidad</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle mx-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Gráfico Ibex
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink="/ibex/grafico" >Gráfico</a>
+            <a class="dropdown-item" routerLink="/ibex/parametros">Parámetros</a>
           </div>
-        </div>
-      </li>
-
-
-      
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-    </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid mt-4">
-          <router-outlet></router-outlet>
-
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Derechos reservados &copy; PUCV</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
-
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
     </div>
-    <!-- End of Content Wrapper -->
+  </nav>
 
+
+  <div class="container-fluid mt-4">
+    <router-outlet></router-outlet>
+    
   </div>
-  <!-- End of Page Wrapper -->
+  <!-- Footer -->
+  <footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>Derechos reservados &copy; PUCV</span>
+      </div>
+    </div>
+  </footer>
+  <!-- End of Footer -->

@@ -29,7 +29,6 @@ export class ParametrosComponent implements OnInit {
   }
   
   async initializeParams(){
-
     this.ibexService.selectedDomain = ""
     this.ibexService.selectedDomain = ""
     this.ibexService.selectedFunction = ""
@@ -48,9 +47,26 @@ export class ParametrosComponent implements OnInit {
     this.ibexService.domains.push('x5 in [ 1,5];\n')
     this.ibexService.domains.push('x6 in [ 0,10];\n')
     this.ibexService.domains.push('z1 in [-1e8, 1e8];\n')
-    this.ibexService.domains.push('z2 in [-1e8, 1e8];')
-    
+    this.ibexService.domains.push('z2 in [-1e8, 1e8];\n')
   }
+
+  deleteDom(dom){
+    console.log(dom)
+    let index = this.ibexService.domains.indexOf(dom)
+    this.ibexService.domains.splice(index, 1);
+  }
+
+  deleteFun(fun){
+    let index = this.ibexService.functions.indexOf(fun)
+    this.ibexService.functions.splice(index, 1);
+  }
+
+  deleteCnt(cnt){
+    let index = this.ibexService.constraints.indexOf(cnt)
+    this.ibexService.constraints.splice(index, 1);
+  }
+
+
 
   
   plusFunction(){
@@ -105,6 +121,8 @@ export class ParametrosComponent implements OnInit {
     this.apiSolverService.setInstance(filename.toString(), base, concatenateParameters).subscribe((res) => {
       console.log("res: crearInstancia", res)
     });
+
+    this.instanciaFlag = true;
   }
 
 }
