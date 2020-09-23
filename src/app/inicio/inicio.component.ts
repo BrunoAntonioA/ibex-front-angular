@@ -16,9 +16,14 @@ export class InicioComponent implements OnInit {
   constructor(private apisolverService: ApisolverService) { }
 
   array : Array<Number>
+  modalSection: Number
+  inputModal: string
 
   ngOnInit(): void {
+    this.modalSection = 0
+    this.inputModal = ""
     this.array = [1, 2, 3]
+
     console.log(this.array)
   }
 

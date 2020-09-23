@@ -26,9 +26,16 @@ export class ApisolverService {
   private graficoFlag = new BehaviorSubject<Boolean>(false);
   currentGraficoFlag = this.graficoFlag.asObservable();
 
+  private commandList = new BehaviorSubject<string[]>([]);
+  currentComandList = this.commandList.asObservable();
+
   readonly baseURL = 'http://localhost:3000/tesis/instruccion';
 
   constructor(private http: HttpClient) { }
+
+  changeCommandList(value){
+    this.commandList.next(value)
+  }
 
   changeGraficoFlag(value: Boolean){
     this.graficoFlag.next(value);
@@ -56,5 +63,9 @@ export class ApisolverService {
 
   setInstance(filename : string, base : string, string : string){
     return this.http.post(base + 'crearInstancia/' + filename, {"string" : string, "port" : parseInt(sessionStorage.getItem('port'))});
+  }
+
+  updateData(oldX, oldY, opt){
+    return this.http.post('http://localhost:3000/tesis/updateData', {oldX: oldX, oldY: oldY, opt: opt,  port: parseInt(sessionStorage.getItem('port'))})
   }
 }

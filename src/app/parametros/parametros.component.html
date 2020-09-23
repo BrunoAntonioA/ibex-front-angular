@@ -1,12 +1,20 @@
 <div class="my-4">
   <div class="d-flex justify-content-center">
-    <div *ngIf='!instanciaFlag'>
-      <button class="btn btn-success" (click)='crearInstancia()'> Crear Instancia! </button>
+    <div class="row my-2">
+      <div *ngIf='!instanciaFlag'>
+        <button class="btn btn-success" (click)='crearInstancia()'> Crear Instancia! </button>
+      </div>
     </div>
-  </div>
+    <div class="row">
+      <div *ngIf='errorMessageFlag == true'>
+        <div class="alert alert-danger" role="alert">
+          <p> {{errorMessage}}</p>
+        </div>
+      </div>
+    </div>
 </div>
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-3 col-md-6">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -15,10 +23,13 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="col-auto">
-              <div *ngIf='!instanciaFlag'>
-                <div class="input-group mb-2">
-                        <input type="text" class="form-control" placeholder="function" [(ngModel)]="ibexService.selectedFunction">
-                        <button class="btn btn-primary" (click)="plusFunction()"><i class="fa fa-plus"></i></button>
+              <div *ngIf='!instanciaFlag' >
+                <div *ngIf='ibexService.functions.length <= 1'>
+                  <div class="input-group mb-2">
+                    <input type="text" class="form-control" placeholder="function" [(ngModel)]="ibexService.selectedFunction.value">
+                    <button class="btn btn-primary" (click)="plusFunction()"><i class="fa fa-plus"></i></button>
+                  </div>
+                  
                 </div>
 
               </div>
@@ -30,11 +41,14 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let fnc of ibexService.functions">
+                      <tr *ngFor="let fnc of ibexService.functions; let i = index">
                         <td>
                           <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder={{fnc}} aria-label={{fnc}} aria-describedby="basic-addon2">
+                            <input type="text" class="form-control disabled" disabled placeholder={{fnc}} aria-describedby="basic-addon2">
                             <div class="input-group-append">
+                              <button type="button" class="btn btn-outline-secondary" (click)="editarParametro(i, 0)" data-toggle="modal" data-target="#exampleModal" >
+                                edit
+                              </button>
                               <button class="btn btn-outline-secondary" type="button" (click)="deleteFun(fnc)">
                                 Del
                               </button>
@@ -57,18 +71,27 @@
         
     </div>
     
-    <div class="col-lg-4">
+    <div class="col-lg-3 col-md-6">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Domains</h6>
           </div>
+          <!--  
+            <div class="d-flex justify-content-center">
+              <div *ngIf='errorMessageFlag == true'>
+                <p> {{errorMessage}}</p>
+              </div>
+            </div>
+          -->
           <!-- Card Body -->
           <div class="card-body">
             <div class="col-auto">
               <div *ngIf='!instanciaFlag'>
                 <div class="input-group mb-2">
-                  <input type="text" class="form-control" placeholder="Domain" [(ngModel)]="ibexService.selectedDomain">
+                  <input type="text" class="form-control" placeholder="Var" [(ngModel)]="ibexService.selectedDomain.var">
+                  <input type="text" class="form-control" placeholder="Inf. Val" [(ngModel)]="ibexService.selectedDomain.infValue">
+                  <input type="text" class="form-control" placeholder="Sup. Val" [(ngModel)]="ibexService.selectedDomain.supValue">
                   <button class="btn btn-primary" (click)="plusDomain()"><i class="fa fa-plus"></i></button>
                 </div>
 
@@ -81,11 +104,14 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let dom of ibexService.domains">
+                      <tr *ngFor="let dom of ibexService.domains; let i = index">
                         <td>
                           <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder={{dom}} aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" disabled value={{dom}} aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
+                              <button type="button" class="btn btn-outline-secondary" (click)="editarParametro(i, 1)" data-toggle="modal" data-target="#exampleModal">
+                                Edit
+                              </button>
                               <button class="btn btn-outline-secondary" type="button" (click)="deleteDom(dom)">
                                 Del
                               </button>
@@ -106,7 +132,7 @@
       <div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-3 col-md-6">
         <div class="card shadow mb-4">
           <!-- Card Header - Dropdown -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -118,7 +144,7 @@
                 <div class="input-group mb-2">
                   <div *ngIf='!instanciaFlag'>
                     <div class="input-group mb-2">
-                        <input type="text" class="form-control" placeholder="Constraint" [(ngModel)]="ibexService.selectedConstraint">
+                        <input type="text" class="form-control" placeholder="Constraint" [(ngModel)]="ibexService.selectedConstraint.value">
                         <button class="btn btn-primary" (click)="plusConstraint()"><i class="fa fa-plus"></i></button>
                   </div>
 
@@ -132,11 +158,14 @@
                       </tr>
                     </thead>
                     <tbody >
-                      <tr *ngFor="let const of ibexService.constraints">
+                      <tr *ngFor="let const of ibexService.constraints; let i = index">
                         <td>
                           <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder={{const}} aria-label={{const}} aria-describedby="basic-addon2">
-                            <div class="input-group-append">
+                            <input type="text" class="form-control" disabled value={{const}} aria-describedby="basic-addon2">
+                            <div class="input-group-append disabled">
+                              <button type="button" class="btn btn-outline-secondary" (click)="editarParametro(i, 2)" data-toggle="modal" data-target="#exampleModal" >
+                                Edit
+                              </button>
                               <button class="btn btn-outline-secondary" type="button" (click)="deleteCnt(const)">
                                 Del
                               </button>
@@ -156,6 +185,128 @@
       </div>
       <div>
     </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Constants</h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="col-auto">
+              <div class="input-group mb-2">
+                <div *ngIf='!instanciaFlag'>
+                  <div class="input-group mb-2">
+                      <input type="text" class="form-control" placeholder="Name" [(ngModel)]="ibexService.selectedConstant.name">
+                      <input type="number" class="form-control" placeholder="Value" [(ngModel)]="ibexService.selectedConstant.infValue">
+                      <input type="number" class="form-control" placeholder="Value" [(ngModel)]="ibexService.selectedConstant.supValue">
+                      <button class="btn btn-primary" (click)="plusConstant()"><i class="fa fa-plus"></i></button>
+                </div>
+
+                </div>
+              </div>
+              <div class="">
+                <table class="table table-hover table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">Constants</th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                    <tr *ngFor="let const of ibexService.constants; let i = index">
+                      <td>
+                        <div class="input-group mb-3">
+                          <input disabled type="text" class="form-control" disabled value={{const}} aria-describedby="basic-addon2">
+                          <div class="input-group-append disabled">
+                            <button type="button" class="btn btn-outline-secondary" (click)="editarParametro(i, 3)" data-toggle="modal" data-target="#exampleModal" >
+                              edit
+                            </button>
+                            <button class="btn btn-outline-secondary" type="button" (click)="deleteConstant(const)">
+                              Del
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="div">
+              .
+            </div>
+        </div>
+      </div>
+    </div>
+    <div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-container">
+              <div class="input-group mb-3" style="width: max-content !important;">
+                  <div *ngIf="modalSection == 0">
+                      <label for="">Function</label>
+                      <div class="ml-2 mb-2" style="width: max-content !important;">
+                        <input type="text" class="form-control" placeholder="function" [(ngModel)]="ibexService.selectedFunction.value">
+                      </div>
+                      <div class="row">
+                        <button type="button" class="btn btn-secondary my-2 mx-2" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary my-2" (click)="editFunction()" data-dismiss="modal">Save changes</button> 
+                      </div>
+                  </div>
+                  <div *ngIf="modalSection == 1">
+                      <label for="">Domain</label>
+                      <div class="ml-4 mb-2">
+                        <input type="text" class="form-control" placeholder="Var" [(ngModel)]="ibexService.selectedDomain.var">
+                        <input type="text" class="form-control" placeholder="Inf. Val" [(ngModel)]="ibexService.selectedDomain.infValue">
+                        <input type="text" class="form-control" placeholder="Sup. Val" [(ngModel)]="ibexService.selectedDomain.supValue">
+                      </div>
+                      <div class="row">
+                        <button type="button" class="btn btn-secondary my-2 mx-2" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary my-2" (click)="editDomain()" data-dismiss="modal">Save changes</button> 
+                      </div>
+                  </div>
+                  <div *ngIf="modalSection == 2">
+                      <label for="">Constraint</label>
+                      <div class="ml-4 mb-2">
+                          <input type="text" class="form-control" placeholder="Constraint" [(ngModel)]="ibexService.selectedConstraint.value">
+                      </div>
+                      <div class="row">
+                        <button type="button" class="btn btn-secondary my-2 mx-2" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary my-2" (click)="editConstraint()" data-dismiss="modal">Save changes</button> 
+                      </div>
+                  </div>
+                  <div *ngIf="modalSection == 3">
+                      <label for="">Constant</label>
+                      <div class="row">
+                        <div class="ml-4 mb-2">
+                            <input type="text" class="form-control my-1" placeholder="Name" [(ngModel)]="ibexService.selectedConstant.name">
+                            <input type="number" class="form-control my-1" placeholder="Value" [(ngModel)]="ibexService.selectedConstant.infValue">
+                            <input type="number" class="form-control my-1" placeholder="Value" [(ngModel)]="ibexService.selectedConstant.supValue">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <button type="button" class="btn btn-secondary my-2 mx-2" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary my-2" (click)="editConstant()" data-dismiss="modal">Save changes</button> 
+                      </div>
+                  </div>
+                  
+          </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 

@@ -12,22 +12,68 @@ export class IbexService {
 
   selectedIbex: Ibex;
 
-  functions : string[] = [];
-  domains : string[] = [];
-  constraints : string[] = [];
+  functions : string[] = []
+  domains : any[] = []
+  constraints : string[] = []
+  constants: string[] = []
 
-  selectedFunction: string;
-  selectedDomain: string;
-  selectedConstraint: string;
+  // For checking all the variables domains in the domains
+  domainVariablesNames: string[] = []
+
+  // For checking all the variables names in functions
+  functionVariablesNames: string[] = []
+
+  // To check all constants names
+  constantVariableNames: string[] = []
+  
+  selectedConstant: {
+    index: 0,
+    name: string,
+    infValue: Number,
+    supValue: Number
+  }
+
+  selectedFunction: {
+    index: 0,
+    value: string
+  }
+
+  selectedDomain: {
+    index: 0,
+    var: string,
+    infValue: Number,
+    supValue: Number,
+  }
+  selectedConstraint: {
+    index: 0,
+    value: string
+  } 
 
   readonly baseURL = 'http://localhost:3020/ibexs';
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(){
-    this.selectedConstraint = ""
-    this.selectedDomain = ""
-    this.selectedFunction = ""
+    this.selectedConstraint = {
+      index: 0,
+      value: ""
+    }
+    this.selectedDomain = {
+      index: 0,
+      var: "",
+      infValue: 0,
+      supValue: 0
+    }
+    this.selectedFunction = {
+      index: 0,
+      value: ""
+    } 
+    this.selectedConstant = {
+      index: 0,
+      name: "",
+      infValue: 0,
+      supValue: 0
+    }
   }
 
   postIbex(ibex : Ibex){
