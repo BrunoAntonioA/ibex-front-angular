@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
-import { NgForm, FormBuilder } from '@angular/forms';
-
 import { IbexService } from '../shared/ibex/ibex.service';
 
 import { ApisolverService } from '../shared/apisolver/apisolver.service';
 
 import { Ibex } from '../shared/ibex/ibex.model';
+import { Lines } from '../shared/lines.model';
 import { ThrowStmt } from '@angular/compiler';
 
 
@@ -26,6 +24,10 @@ export class ParametrosComponent implements OnInit {
   graficadoFlag: Boolean;
   constantFlag: Boolean;
   comandList: string[];
+  lines: Lines;
+
+  toggleFlag: Boolean;
+  toggleValue: string;
 
   modalSection: Number
   inputModal: string
@@ -36,6 +38,7 @@ export class ParametrosComponent implements OnInit {
 
   ngOnInit() {
 
+    this.apiSolverService.currentLines.subscribe(lines => this.lines = lines)
     this.apiSolverService.currentInstanciaFlag.subscribe(instanciaFlag => this.instanciaFlag = instanciaFlag)
     this.apiSolverService.currentGraficoFlag.subscribe(graficoFlag => this.graficadoFlag = graficoFlag)
     this.apiSolverService.currentComandList.subscribe(comandList => this.comandList = comandList)
@@ -44,12 +47,18 @@ export class ParametrosComponent implements OnInit {
   }
   
   async initializeParams(){
+    this.toggleFlag = false;
+    this.toggleValue = "Instancias pre hechas"
     this.inputModal = ""
     this.modalSection = 0;
     this.errorMessage = "";
     this.comandList = []
     this.errorMessageFlag = false;
     this.constantFlag = false;
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: ""
+    }
     this.ibexService.selectedDomain = {
       index: 0,
       var: "",
@@ -66,26 +75,121 @@ export class ParametrosComponent implements OnInit {
       infValue: 0,
       supValue: 0
     }
-
-    if ( this.ibexService.functions.length == 0){
-      this.ibexService.selectedFunction = {
+  }
+  async instanciaMop13(){
+    this.toggleFlag = false
+    this.toggleValue = "Mop-13"
+    this.ibexService.functions = []
+    this.ibexService.domains = []
+    this.ibexService.constraints = []
+    this.ibexService.constants = []
+    for (let i = 1; i <= 13; i++) {
+      this.ibexService.selectedDomain = {
         index: 0,
-        value: '-(25*(x1-2)^2+(x2-2)^2+(x3-1)^2+(x4-4)^2+(x5-1)^2) = z1;'
+        var: "x"+i.toString(),
+        infValue: -5,
+        supValue: 5
       }
-      await this.plusFunction()
-      
-      this.ibexService.selectedFunction = {
-        index: 0,
-        value: 'x1^2+x2^2+x3^2+x4^2+x5^2+x6^2 = z2;'
-      } 
-      await this.plusFunction()
-      this.ibexService.constraints.push('-(x1+x2-2) <= 0;')
-      this.ibexService.constraints.push('-(-x1-x2+6) <= 0;')
-      this.ibexService.constraints.push('-(x1-x2+2) <= 0;\n')
-      this.ibexService.constraints.push('-(-x1+3*x2+2) <= 0;\n' )
-      this.ibexService.constraints.push('-(-(x3-3)^2-x4+4) <= 0;\n')
-      this.ibexService.constraints.push('-((x5-3)^2+x6-4) <= 0;')
+      await this.plusDomain();
     }
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: '(x2-1)^2 + (x3-1)^2 +(x4-1)^2 +(x5-1)^2 +(x6-1)^2 +(x7-1)^2 +(x8-1)^2 +(x9-1)^2 +(x10-1)^2 +(x11-1)^2 +(x12-1)^2 +(x13-1)^2 +(x1-1)^4 = z1;'
+    }
+    await this.plusFunction()
+    
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: '(x1+1)^2 + (x3+1)^2 +(x4+1)^2 +(x5+1)^2 +(x6+1)^2 +(x7+1)^2 +(x8+1)^2 +(x9+1)^2 +(x10+1)^2 +(x11+1)^2 +(x12+1)^2 +(x13+1)^2 +(x2+1)^4 = z2;'
+    } 
+    await this.plusFunction()
+
+  }
+  
+  async instanciaMop10(){
+    this.toggleFlag = false
+    this.toggleValue = "Mop-10"
+    this.ibexService.functions = []
+    this.ibexService.domains = []
+    this.ibexService.constraints = []
+    this.ibexService.constants = []
+    for (let i = 1; i <= 10; i++) {
+      this.ibexService.selectedDomain = {
+        index: 0,
+        var: "x"+i.toString(),
+        infValue: -5,
+        supValue: 5
+      }
+      await this.plusDomain();
+    }
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: '(x2-1)^2 + (x3-1)^2 +(x4-1)^2 +(x5-1)^2 +(x6-1)^2 +(x7-1)^2 +(x8-1)^2 +(x9-1)^2 +(x10-1)^2 +(x1-1)^4 = z1;'
+    }
+    await this.plusFunction()
+    
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: '(x1+1)^2 + (x3+1)^2 +(x4+1)^2 +(x5+1)^2 +(x6+1)^2 +(x7+1)^2 +(x8+1)^2 +(x9+1)^2 +(x10+1)^2 +(x2+1)^4 = z2; '
+    } 
+    await this.plusFunction()
+
+  }
+
+  async instanciaMop7(){
+    this.toggleFlag = false
+    this.toggleValue = "Mop-7"
+    this.ibexService.functions = []
+    this.ibexService.domains = []
+    this.ibexService.constraints = []
+    this.ibexService.constants = []
+    for (let i = 1; i <= 7; i++) {
+      this.ibexService.selectedDomain = {
+        index: 0,
+        var: "x"+i.toString(),
+        infValue: -5,
+        supValue: 5
+      }
+      await this.plusDomain();
+    }
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: '(x2-1)^2 + (x3-1)^2 +(x4-1)^2 +(x5-1)^2 +(x6-1)^2 +(x7-1)^2 +(x1-1)^4 = z1;'
+    }
+    await this.plusFunction()
+    
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: '(x1+1)^2 + (x3+1)^2 +(x4+1)^2 +(x5+1)^2 +(x6+1)^2 +(x7+1)^2 +(x2+1)^4 = z2;'
+    } 
+    await this.plusFunction()
+    
+  }
+
+  async instanciaPred(){
+    this.toggleFlag = false
+    this.toggleValue = "Pred"
+    this.ibexService.functions = []
+    this.ibexService.domains = []
+    this.ibexService.constraints = []
+    this.ibexService.constants = []
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: '-(25*(x1-2)^2+(x2-2)^2+(x3-1)^2+(x4-4)^2+(x5-1)^2) = z1;'
+    }
+    await this.plusFunction()
+    
+    this.ibexService.selectedFunction = {
+      index: 0,
+      value: 'x1^2+x2^2+x3^2+x4^2+x5^2+x6^2 = z2;'
+    } 
+    await this.plusFunction()
+    this.ibexService.constraints.push('-(x1+x2-2) <= 0;')
+    this.ibexService.constraints.push('-(-x1-x2+6) <= 0;')
+    this.ibexService.constraints.push('-(x1-x2+2) <= 0;\n')
+    this.ibexService.constraints.push('-(-x1+3*x2+2) <= 0;\n' )
+    this.ibexService.constraints.push('-(-(x3-3)^2-x4+4) <= 0;\n')
+    this.ibexService.constraints.push('-((x5-3)^2+x6-4) <= 0;')
   }
 
   deleteDom(dom){
@@ -288,7 +392,6 @@ export class ParametrosComponent implements OnInit {
   }
 
   async concatenateParameters(){
-
     let concatenation = ""
     let domainsCopy = Object.assign([], this.ibexService.domains);
     domainsCopy.push('z1 in [-1e8, 1e8];\n')
@@ -372,6 +475,7 @@ export class ParametrosComponent implements OnInit {
       this.ibexService.selectedConstant.index = index;
     }
   }
+
   editConstant(){
     let index = this.ibexService.selectedConstant.index
     this.ibexService.constants[index] = (

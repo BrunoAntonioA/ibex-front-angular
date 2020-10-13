@@ -2,9 +2,24 @@
   <div class="d-flex justify-content-center">
     <div class="row my-2">
       <div *ngIf='!instanciaFlag'>
-        <button class="btn btn-success" (click)='crearInstancia()'> Crear Instancia! </button>
+        <div class="row">
+            <!-- Example single danger button -->
+            <div class="btn-group">
+              <button type="button" (click)="this.toggleFlag == true ? this.toggleFlag = false : this.toggleFlag = true;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                {{toggleValue}}
+              </button>
+              <div class="dropdown-menu" [ngClass]="{'show': toggleFlag}">
+                <a class="dropdown-item" (click)="instanciaMop7()">mop-7</a>
+                <a class="dropdown-item" (click)="instanciaMop10()">mop-10</a>
+                <a class="dropdown-item" (click)="instanciaMop13()">mop-13</a>
+                <a class="dropdown-item" (click)="instanciaPred()">Pred</a>
+              </div>
+            </div>
+            <button class="btn btn-success mx-4" (click)='crearInstancia()'> Crear Instancia! </button><div class="dropdown">    
+        </div>
       </div>
     </div>
+  </div>
     <div class="row">
       <div *ngIf='errorMessageFlag == true'>
         <div class="alert alert-danger" role="alert">

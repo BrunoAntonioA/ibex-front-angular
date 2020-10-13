@@ -17,6 +17,9 @@ export class ApisolverService {
   private parametersSource = new BehaviorSubject<Parameters>(new Parameters);  
   currentParameters = this.parametersSource.asObservable();
 
+  private precisionSourse = new BehaviorSubject<Number>(1e-2)
+  currentPrecision = this.precisionSourse.asObservable();
+
   private linesSource = new BehaviorSubject<Lines>(new Lines);
   currentLines = this.linesSource.asObservable();
 
@@ -32,6 +35,10 @@ export class ApisolverService {
   readonly baseURL = 'http://localhost:3000/tesis/instruccion';
 
   constructor(private http: HttpClient) { }
+
+  changePrecision(value){
+    this.precisionSourse.next(value)
+  }
 
   changeCommandList(value){
     this.commandList.next(value)

@@ -5,6 +5,9 @@ import * as _ from 'lodash';
 
 import { interval, timer, fromEvent } from 'rxjs';
 
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2'
+
 import { ApisolverService } from '../shared/apisolver/apisolver.service';
 
 import { Instruccion } from '../shared/apisolver/instruccion.model';
@@ -24,8 +27,12 @@ export class PlotlyComponent implements OnInit {
   public data: any[] = [];
   public layout: any = {};
 
+  rpmFlag: Boolean;
+  manualInteractionFlag: Boolean;
+  interactionList: string[];
   parameters: Parameters;
   lines: Lines;
+  precision: Number;
   graficadoFlag: Boolean;
   instanciaFlag: Boolean;
   gupFlag: Boolean;
@@ -36,6 +43,7 @@ export class PlotlyComponent implements OnInit {
 
   constructor(private apisolverService: ApisolverService, private renderer: Renderer2) { }
 
+
   async ngOnInit() {
     this.apisolverService.currentLines.subscribe(lines => this.lines = lines)
     this.apisolverService.currentParameters.subscribe(parameters => this.parameters = parameters)
@@ -43,17 +51,87 @@ export class PlotlyComponent implements OnInit {
     this.apisolverService.currentInstanciaFlag.subscribe(instanciaFlag => this.instanciaFlag = instanciaFlag)
     this.apisolverService.currentComandList.subscribe(comandList => this.comandList = comandList)
 
-    /*
-    if( this.instanciaFlag == true){
-      this.initializeVariables()
-      this.ejecutarRun();
-    }
-    */
+    this.initializeVariables();
+    
   }
 
-  relayout(eventData){
-    console.log('event data: ', eventData);
+  async ejercutarInteraciones(){
+    for (let i = 0; i < this.interactionList.length; i++) {
+      const element = this.interactionList[i].slice(0, 3);
+      if(element == 'run'){
+        await this.ejecutarRun()
+      }else if( element == 'gup'){
+        await this.ejecutarGup()
+      }else if (element == 'glw'){
+        await this.ejecutarGlw()
+      }
+    }
+    await this.updateGrafico()
+    await this.updateGrafico()
   }
+
+  changeInteraction(value){
+    this.manualInteractionFlag = value
+  }
+
+  agregarRun(){
+    this.interactionList.push('run 100 ' + this.precision.toString())
+  }
+
+  agregarGlw(){
+    this.interactionList.push('glw 100 ' + this.precision.toString())
+  }
+
+  agregarGup(){
+    this.interactionList.push('gup 100 ' + this.precision.toString())
+  }
+
+  
+  pointClick(event: any){
+    Swal.fire({
+      title: 'RPM',
+      text: '¿Quieres hacer una búsqueda en el punto X:' + event.points[0].x + ' Y:' + event.points[0].y + '?',
+      icon: 'question',
+      showDenyButton: true,
+      confirmButtonText: 'Si!',
+      denyButtonText: 'No'
+    }).then((res)=>{
+      if( res.isConfirmed == true){
+        this.rpmFlag = true
+      }
+    })
+  }
+
+  cancerlarRPM(){
+    Swal.fire({
+      title: 'RPM',
+      text: '¿Deseas cancelar el RPM?',
+      icon: 'error',
+      showDenyButton: true,
+      confirmButtonText: 'Si!',
+      denyButtonText: 'No'
+    }).then((res)=>{
+      if( res.isConfirmed == true){
+        this.rpmFlag = false
+      }
+    })
+  }
+
+  async verificarIgualdad(){
+    let contador = 0;
+    for (let i = 0; i < this.lines.upperX.length; i++) {
+      let el = this.lines.upperX[i]
+      let index = this.lines.lowerX.indexOf(el)
+      if( index != -1){
+        if(this.lines.upperY[i] == this.lines.lowerY[index]){
+          contador = contador + 1
+        }
+      }
+    }
+    this.messageFlag = true;
+    this.message = "La cantidad de datos iguales entre el lower bound y upper bound es de :" + contador.toString()
+  }
+
 
   async zoomGraph(eventData){
     let count = 0;
@@ -86,16 +164,21 @@ export class PlotlyComponent implements OnInit {
           range: [x0, x1]
         }
       }
+      this.precision = x1 / 100
+      this.apisolverService.changePrecision(this.precision)
       this.ejecutarZoo(x1, y1)
+    }else{
+      this.precision = 1e-2
+      this.apisolverService.changePrecision(this.precision)
     }  
   }
 
   zoomOut(){
     this.layout = {
     }
+    this.precision = 1e-2
+    this.apisolverService.changePrecision(this.precision)
   }
-
-  
   
   //Instanciacion de variables e iniciado de graficado
   async ngAfterViewInit(){
@@ -116,11 +199,21 @@ export class PlotlyComponent implements OnInit {
     this.parameters.constraints = []
     this.parameters.domains = []
     this.parameters.fnctions = []
-    this.lines = new Lines()
-    this.lines.lowerX = []
-    this.lines.upperX = []
-    this.lines.lowerY = []
-    this.lines.upperY = []
+    this.interactionList = []
+    this.manualInteractionFlag = true
+    this.rpmFlag = false;
+    
+    if( this.instanciaFlag == true){
+      this.data = [
+        { x: this.lines.upperX, y: this.lines.upperY, type: 'scatter', mode: 'lines markers', name: 'Upper Bound', marker:{size:16} },
+        { x: this.lines.lowerX, y: this.lines.lowerY, type: 'scatter', mode: 'lines', name: 'Lower Bound', marker:{size:16} },
+      ]
+      this.layout = {
+        hovermode:'closest'
+      }
+    }
+    this.precision = 1e-2
+    this.apisolverService.changePrecision(this.precision)
     this.apisolverService.changeLines(this.lines)
     this.apisolverService.changeParameters(this.parameters) 
     this.messageFlag = false
@@ -134,8 +227,8 @@ export class PlotlyComponent implements OnInit {
       await this.ejecutarGup();
       await this.ejecutarGlw();
       this.data = [
-        { x: this.lines.upperX, y: this.lines.upperY, type: 'scatter', mode: 'lines', name: 'Upper Bound' },
-        { x: this.lines.lowerX, y: this.lines.lowerY, type: 'scatter', mode: 'lines', name: 'Lower Bound' },
+        { x: this.lines.upperX, y: this.lines.upperY, type: 'scatter', mode: 'lines', name: 'Upper Bound', marker:{size:16} },
+        { x: this.lines.lowerX, y: this.lines.lowerY, type: 'scatter', mode: 'lines', name: 'Lower Bound', marker:{size:16} },
       ]
       await this.ejecutarRun();
     }
@@ -144,8 +237,8 @@ export class PlotlyComponent implements OnInit {
   async updateGrafico(){
     await this.ejecutarRun();
     this.data = [
-      { x: this.lines.upperX, y: this.lines.upperY, type: 'scatter', mode: 'lines', name: 'Upper Bound' },
-      { x: this.lines.lowerX, y: this.lines.lowerY, type: 'scatter', mode: 'lines', name: 'Lower Bound' },
+      { x: this.lines.upperX, y: this.lines.upperY, type: 'scatter', mode: 'lines', name: 'Upper Bound', marker:{size:16} },
+      { x: this.lines.lowerX, y: this.lines.lowerY, type: 'scatter', mode: 'lines', name: 'Lower Bound', marker:{size:16} },
     ]
     this.ejecutarGlw();
     this.ejecutarGup();
@@ -156,7 +249,7 @@ export class PlotlyComponent implements OnInit {
     if ( this.instanciaFlag == true){
       var instruccion = new Instruccion();
       instruccion.instruc = "run";
-      instruccion.param = "100 0.1";
+      instruccion.param = "100 " + this.precision.toString();
       instruccion.port = parseInt(sessionStorage.getItem('port'));
       await this.apisolverService.postInstruction(instruccion).subscribe((res : any) =>{
         if( Object.prototype.hasOwnProperty.call(res, "code")){
@@ -177,7 +270,7 @@ export class PlotlyComponent implements OnInit {
     if( this.instanciaFlag == true ){
       var instruccion = new Instruccion();
       instruccion.instruc = "glw";
-      instruccion.param = "";
+      instruccion.param = " " + this.precision.toString();
       instruccion.port = parseInt(sessionStorage.getItem('port'));
       await this.apisolverService.postInstruction(instruccion).subscribe((res : any) =>{
         console.log('res glw: ', res)
@@ -187,11 +280,19 @@ export class PlotlyComponent implements OnInit {
           this.comandList.push(instruccion.instruc + " " + instruccion.param + " " + instruccion. port)
           this.apisolverService.changeCommandList(this.comandList)
           console.log('ComandList: ', this.comandList)
-          this.lines.lowerX = res.x
-          this.lines.lowerY = res.y
+          console.log('res glw : x: ', res.x, ' y: ', res.y)
+          if( res.x.length != 0){
+            this.messageFlag = false
+            this.message = ""
+            this.lines.lowerX = res.x
+            this.lines.lowerY = res.y
+            this.changeLines()
+          }else{
+            this.messageFlag = true
+            this.message = "No se están recibiendo valores del solver"
+          }
         }
       });
-      await this.apisolverService.changeLines(this.lines)
     }
   }
     
@@ -200,7 +301,7 @@ export class PlotlyComponent implements OnInit {
     if( this.instanciaFlag == true){
       var instruccion = new Instruccion();
       instruccion.instruc = "gup";
-      instruccion.param = "";
+      instruccion.param = " " + this.precision.toString();
       instruccion.port = parseInt(sessionStorage.getItem('port'));
       await this.apisolverService.postInstruction(instruccion).subscribe((res : any) =>{
         if(Object.prototype.hasOwnProperty.call(res, "code")){
@@ -209,21 +310,28 @@ export class PlotlyComponent implements OnInit {
           this.comandList.push(instruccion.instruc + " " + instruccion.param + " " + instruccion. port)
           this.apisolverService.changeCommandList(this.comandList)
           console.log('ComandList: ', this.comandList)
-          this.lines.upperX = res.x
-          this.lines.upperY = res.y
+          console.log('res gup : x: ', res.x, ' y: ', res.y)
+          if( res.x.length != 0){
+            this.messageFlag = false
+            this.message = ""
+            this.lines.upperX = res.x
+            this.lines.upperY = res.y
+            this.changeLines()
+          }else{
+            this.messageFlag = true
+            this.message = "No se están recibiendo valores del solver"
+          }
         }
       });
-      await this.apisolverService.changeLines(this.lines)
     }
   }
     
   //Ejecuto el comando zoom
-  async ejecutarZoo(x1, y1){
+  async ejecutarZoo(x, y){
     if( this.instanciaFlag == true){
-      let precision = x1 / 100
       var instruccion = new Instruccion();
-      instruccion.instruc = "zoo";
-      instruccion.param = x1.toString() + " " + y1.toString() + " " + precision.toString();
+      instruccion.instruc = "zoo ";
+      instruccion.param = x.toString().slice(0, 8) + " " + y.toString().slice(0, 8) + " " + this.precision.toString().slice(0, 8);
       instruccion.port = parseInt(sessionStorage.getItem('port'));
       await this.apisolverService.postInstruction(instruccion).subscribe((res : any) =>{
         if(Object.prototype.hasOwnProperty.call(res, "code")){
